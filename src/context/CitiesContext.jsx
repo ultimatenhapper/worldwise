@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const BASE_URL = "http://localhost:8000";
 const initialState = {
@@ -43,8 +38,10 @@ const reducer = (state, action) => {
   }
 };
 function CitiesProvider({ children }) {
-  const [{cities, currentCity, isLoading}, dispatch] = useReducer(reducer, initialState);
-  
+  const [{ cities, currentCity, isLoading }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   useEffect(() => {
     async function fetchCities() {
@@ -65,6 +62,8 @@ function CitiesProvider({ children }) {
   }, []);
 
   const fetchCity = async (id) => {
+    if (Number(id) === currentCity.id) return;
+    
     try {
       dispatch({ type: "loading" });
       const res = await fetch(`${BASE_URL}/cities/${id}`);
